@@ -225,7 +225,7 @@ export type BatchUpdates = {
 type PendingMessageDetails = {
   peerId: PeerId,
   tempId: number,
-  threadId: number,
+  threadId: ThreadId,
   storage: MessagesStorage,
   sequential?: boolean
 };
@@ -256,7 +256,7 @@ export type SuggestedPostPayload = {
 
 export type MessageSendingParams = Partial<{
   peerId: PeerId,
-  threadId: number,
+  threadId: ThreadId,
   replyToMsgId: number,
   replyToStoryId: number,
   replyToQuote: {text: string, entities?: MessageEntity[], offset?: number},
@@ -267,7 +267,7 @@ export type MessageSendingParams = Partial<{
   scheduleDate: number,
   scheduleRepeatPeriod: number,
   silent: boolean,
-  sendAsPeerId: number,
+  sendAsPeerId: PeerId,
   updateStickersetOrder: boolean,
   savedReaction: Reaction[],
   invertMedia: boolean,
@@ -292,7 +292,7 @@ export type RequestHistoryOptions = {
   limit?: number,
   addOffset?: number,
   offsetDate?: number,
-  threadId?: number,
+  threadId?: ThreadId,
   monoforumThreadId?: PeerId,
   // search
   nextRate?: number,
@@ -318,15 +318,15 @@ export type RequestHistoryOptions = {
 };
 
 type GetHistoryTypeOptions = {
-  threadId?: number,
-  monoforumPeerId?: number
+  threadId?: ThreadId,
+  monoforumPeerId?: PeerId
 };
 
 export type SearchStorageFilterKey = string;
 
 type GetUnreadMentionsOptions = {
   peerId: PeerId,
-  threadId?: number,
+  threadId?: ThreadId,
   isReaction?: boolean,
   isPollVote?: boolean
 };
@@ -346,7 +346,7 @@ type UploadVideoCoverArgs = {
 type ReadHistoryArgs = {
   peerId: PeerId,
   maxId?: number,
-  threadId?: number,
+  threadId?: ThreadId,
   monoforumThreadId?: PeerId,
   force?: boolean
 };
@@ -410,7 +410,7 @@ type GetPendingOrCreateBotforumTopicArgs = {
 
 type GenerateTypingBotforumMessageArgs = {
   peerId: PeerId,
-  threadId: number,
+  threadId: ThreadId,
   action: SendMessageAction.sendMessageTextDraftAction
 };
 
@@ -1369,6 +1369,7 @@ export class AppMessagesManager extends AppManager {
       const inputPeer = this.appPeersManager.getInputPeerById(peerId);
       const replyTo = options.replyTo;
       let apiPromise: any;
+
       if(options.viaBotId) {
         apiPromise = this.apiManager.invokeApiAfter('messages.sendInlineBotResult', {
           peer: inputPeer,
@@ -3437,7 +3438,7 @@ export class AppMessagesManager extends AppManager {
     return outDialogs;
   } */
 
-  public getReadMaxIdIfUnread(peerId: PeerId, threadId?: number) {
+  public getReadMaxIdIfUnread(peerId: PeerId, threadId?: ThreadId) {
     const historyStorage = this.getHistoryStorage(peerId, threadId);
     // Forum topics (channel.pFlags.forum) AND botforum topics (user.pFlags.bot_forum_view)
     // both fall through to the "topic" branch — they have their own per-topic
@@ -4379,7 +4380,7 @@ export class AppMessagesManager extends AppManager {
     return {cantForward, cantDelete};
   }
 
-  public reloadConversationOrTopic(peerId: PeerId, threadId?: number) {
+  public reloadConversationOrTopic(peerId: PeerId, threadId?: ThreadId) {
     if(threadId) {
       this.dialogsStorage.getForumTopicById(peerId, threadId);
     } else {
@@ -4806,11 +4807,11 @@ export class AppMessagesManager extends AppManager {
     });
   }
 
-  public getPinnedMessagesKey(peerId: PeerId, threadId?: number) {
+  public getPinnedMessagesKey(peerId: PeerId, threadId?: ThreadId) {
     return peerId + (threadId ? '_' + threadId : '');
   }
 
-  public getPinnedMessage(peerId: PeerId, threadId?: number) {
+  public getPinnedMessage(peerId: PeerId, threadId?: ThreadId) {
     const p = this.pinnedMessages[this.getPinnedMessagesKey(peerId, threadId)] ??= {};
     if(p.promise) return p.promise;
     else if(p.maxId) return Promise.resolve(p);
@@ -4830,11 +4831,11 @@ export class AppMessagesManager extends AppManager {
     });
   }
 
-  public getPinnedMessagesCount(peerId: PeerId, threadId?: number) {
+  public getPinnedMessagesCount(peerId: PeerId, threadId?: ThreadId) {
     return this.pinnedMessages[this.getPinnedMessagesKey(peerId, threadId)]?.count;
   }
 
-  public getPinnedMessagesMaxId(peerId: PeerId, threadId?: number) {
+  public getPinnedMessagesMaxId(peerId: PeerId, threadId?: ThreadId) {
     return this.pinnedMessages[this.getPinnedMessagesKey(peerId, threadId)]?.maxId;
   }
 
@@ -5413,7 +5414,7 @@ export class AppMessagesManager extends AppManager {
     up
   }: {
     peerId: PeerId,
-    threadId?: number,
+    threadId?: ThreadId,
     forReply?: boolean,
     mid?: number,
     up?: boolean
@@ -5959,7 +5960,7 @@ export class AppMessagesManager extends AppManager {
     peerId: PeerId,
     filters: MessagesFilter[],
     canCache = true,
-    threadId?: number
+    threadId?: ThreadId
   ): Promise<MessagesSearchCounter[]> {
     peerId = this.appPeersManager.getPeerMigratedTo(peerId) || peerId;
     if(await this.appPeersManager.isPeerRestricted(peerId)) {
@@ -6028,7 +6029,7 @@ export class AppMessagesManager extends AppManager {
     filter: MessagesFilter,
     offsetId?: number,
     offsetDate?: number,
-    threadId?: number
+    threadId?: ThreadId
   }) {
     return this.apiManager.invokeApiSingleProcess({
       method: 'messages.getSearchResultsCalendar',
@@ -6090,7 +6091,7 @@ export class AppMessagesManager extends AppManager {
     return this.threadsServiceMessagesIdsStorage[threadKey] = serviceStartMessage.mid;
   }
 
-  public getThreadServiceMessageId(peerId: PeerId, threadId: number) {
+  public getThreadServiceMessageId(peerId: PeerId, threadId: ThreadId) {
     return this.threadsServiceMessagesIdsStorage[peerId + '_' + threadId];
   }
 
@@ -6405,13 +6406,15 @@ export class AppMessagesManager extends AppManager {
         });
       }
 
-      this.apiUpdatesManager.processLocalUpdate({
-        _: 'updateReadChannelInbox',
-        max_id: maxId,
-        channel_id: peerId.toChatId(),
-        still_unread_count: undefined,
-        pts: undefined
-      });
+      if(!import.meta.env.VITE_MATRIX_BACKEND) {
+        this.apiUpdatesManager.processLocalUpdate({
+          _: 'updateReadChannelInbox',
+          max_id: maxId,
+          channel_id: peerId.toChatId(),
+          still_unread_count: undefined,
+          pts: undefined
+        });
+      }
     } else {
       if(!skipServerCall) {
         apiPromise = this.apiManager.invokeApi('messages.readHistory', {
@@ -6467,7 +6470,7 @@ export class AppMessagesManager extends AppManager {
     return historyStorage.readPromise = apiPromise;
   }
 
-  public readAllHistory(peerId: PeerId, threadId?: number, force = false) {
+  public readAllHistory(peerId: PeerId, threadId?: ThreadId, force = false) {
     const historyStorage = this.getHistoryStorage(peerId, threadId);
     if(historyStorage.maxId) {
       this.readHistory({peerId, maxId: historyStorage.maxId, threadId, force}); // lol
@@ -6703,7 +6706,7 @@ export class AppMessagesManager extends AppManager {
     let hasUnreadReaction = false;
     // For a forum/botforum these reads happen inside a single topic; derive its
     // id from the messages so the server-side reset is scoped to that topic.
-    let threadId: number;
+    let threadId: ThreadId;
     for(const mid of msgIds) {
       const message = this.getMessageByPeer(peerId, mid) as MyMessage;
       if(!message) continue;
@@ -6772,7 +6775,7 @@ export class AppMessagesManager extends AppManager {
     return promise;
   }
 
-  public async readMentions(peerId: PeerId, threadId?: number, isReaction?: boolean, isPollVote?: boolean): Promise<boolean> {
+  public async readMentions(peerId: PeerId, threadId?: ThreadId, isReaction?: boolean, isPollVote?: boolean): Promise<boolean> {
     if(DO_NOT_READ_HISTORY) {
       return;
     }
@@ -7033,7 +7036,7 @@ export class AppMessagesManager extends AppManager {
     return observed;
   }
 
-  public getHistoryStorage(peerId: PeerId, threadId?: number) {
+  public getHistoryStorage(peerId: PeerId, threadId?: ThreadId) {
     if(threadId) {
       // threadId = this.getLocalMessageId(threadId);
       return (this.threadsStorage[peerId] ??= {})[threadId] ??= this.createHistoryStorage({type: 'replies', peerId, threadId});
@@ -7073,7 +7076,7 @@ export class AppMessagesManager extends AppManager {
     return ret;
   }
 
-  private getNotifyPeerSettings(peerId: PeerId, threadId?: number) {
+  private getNotifyPeerSettings(peerId: PeerId, threadId?: ThreadId) {
     const inputNotifyPeer = this.appPeersManager.getInputNotifyPeerById({peerId, ignorePeerId: true, threadId});
     return Promise.all([
       this.appNotificationsManager.getNotifyPeerTypeSettings(),
@@ -8701,7 +8704,7 @@ export class AppMessagesManager extends AppManager {
     }
   }
 
-  public mutePeer(options: {peerId: PeerId, muteUntil: number, threadId?: number}) {
+  public mutePeer(options: {peerId: PeerId, muteUntil: number, threadId?: ThreadId}) {
     if(!(options = this.appNotificationsManager.validatePeerSettings(options))) {
       return;
     }
@@ -8724,7 +8727,7 @@ export class AppMessagesManager extends AppManager {
     }, settings);
   }
 
-  public togglePeerMute({peerId, mute, threadId}: {peerId: PeerId, mute?: boolean, threadId?: number}) {
+  public togglePeerMute({peerId, mute, threadId}: {peerId: PeerId, mute?: boolean, threadId?: ThreadId}) {
     if(mute === undefined) {
       mute = !this.appNotificationsManager.isPeerLocalMuted({peerId, respectType: false, threadId});
     }
@@ -8742,7 +8745,7 @@ export class AppMessagesManager extends AppManager {
     }
   }
 
-  public async canSendToPeer(peerId: PeerId, threadId?: number, action: ChatRights = 'send_messages') {
+  public async canSendToPeer(peerId: PeerId, threadId?: ThreadId, action: ChatRights = 'send_messages') {
     if(await this.appPeersManager.isPeerRestricted(peerId)) {
       return false;
     }
@@ -9176,7 +9179,7 @@ export class AppMessagesManager extends AppManager {
     );
   }
 
-  // public async getNewHistory(peerId: PeerId, threadId?: number) {
+  // public async getNewHistory(peerId: PeerId, threadId?: ThreadId) {
   //   if(!this.isFetchIntervalNeeded(peerId)) {
   //     return;
   //   }
@@ -10238,7 +10241,7 @@ export class AppMessagesManager extends AppManager {
     });
   }
 
-  private getTypingKey(peerId: PeerId, threadId?: number) {
+  private getTypingKey(peerId: PeerId, threadId?: ThreadId) {
     return threadId ? `${peerId}_${threadId}` : peerId;
   }
 
@@ -10246,7 +10249,7 @@ export class AppMessagesManager extends AppManager {
     peerId: PeerId,
     action: SendMessageAction,
     force?: boolean,
-    threadId?: number
+    threadId?: ThreadId
   ): Promise<boolean> {
     if(threadId && !this.appPeersManager.isForum(peerId) && !this.appPeersManager.isBotforum(peerId)) {
       threadId = undefined;

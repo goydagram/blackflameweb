@@ -3,7 +3,7 @@ import wrapTelegramUrlToAnchor from '@lib/richTextProcessor/wrapTelegramUrlToAnc
 
 type WrapTopicThreadAnchorArgs = {
   peerId: PeerId;
-  threadId: number;
+  threadId: ThreadId;
   lastMsgId: number;
 };
 

@@ -621,7 +621,7 @@ export class AppProfileManager extends AppManager {
   public getMentions(
     chatId: ChatId,
     query: string,
-    threadId?: number,
+    threadId?: ThreadId,
     global?: boolean
   ): Promise<PeerId[]> {
     const processUserIds = (topPeers: MyTopPeer[]) => {
@@ -988,11 +988,11 @@ export class AppProfileManager extends AppManager {
     });
   }
 
-  private getTypingsKey(peerId: PeerId, threadId?: number) {
+  private getTypingsKey(peerId: PeerId, threadId?: ThreadId) {
     return peerId + (threadId ? `_${threadId}` : '');
   }
 
-  public getPeerTypings(peerId: PeerId, threadId?: number) {
+  public getPeerTypings(peerId: PeerId, threadId?: ThreadId) {
     return this.typingsInPeer[this.getTypingsKey(peerId, threadId)];
   }
 

@@ -203,7 +203,7 @@ export class AutonomousDialogListBase<T extends PossibleDialog = PossibleDialog>
     throw NOT_IMPLEMENTED_ERROR;
   }
 
-  protected getFilterId(): number {
+  protected getFilterId(): ThreadId {
     throw NOT_IMPLEMENTED_ERROR;
   }
 

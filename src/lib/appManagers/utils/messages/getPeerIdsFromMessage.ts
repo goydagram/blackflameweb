@@ -2,7 +2,7 @@ import {Message, MessageAction, MessageMedia, MessageReplyHeader, Peer, WebPage,
 import getPeerId from '@appManagers/utils/peers/getPeerId';
 
 export default function getPeerIdsFromMessage(message: Message.message | Message.messageService) {
-  const peerIds: number[] = [
+  const peerIds: PeerId[] = [
     message.fromId,
     message.viaBotId,
     (message as Message.message).fwdFromId

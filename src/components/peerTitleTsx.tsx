@@ -8,7 +8,7 @@ export const PeerTitleTsx = (props: {
   ref?: Ref<HTMLElement>;
   class?: string
   peerId: PeerId,
-  threadId?: number,
+  threadId?: ThreadId,
   onlyFirstName?: boolean,
   username?: boolean,
   limitSymbols?: number,

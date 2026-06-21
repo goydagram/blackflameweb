@@ -167,7 +167,7 @@ export type ChatSetPeerOptions = {
   lastMsgId?: number,
   pollOption?: string | Uint8Array,
   lastMsgPeerId?: PeerId,
-  threadId?: number,
+  threadId?: ThreadId,
   monoforumThreadId?: PeerId,
   startParam?: string,
   stack?: {peerId: PeerId, mid: number, message?: Message.message, isOut?: boolean},
@@ -1785,7 +1785,7 @@ export class AppImManager extends EventListenerBase<{
   public async openThread(options: {
     peerId: PeerId,
     lastMsgId: number,
-    threadId: number,
+    threadId: ThreadId,
     stack?: ChatSetPeerOptions['stack']
   }) {
     if(await this.managers.appChatsManager.isForum(options.peerId.toChatId()) || await this.managers.appPeersManager.isBotforum(options.peerId)) {
@@ -2909,7 +2909,7 @@ export class AppImManager extends EventListenerBase<{
     return el;
   }
 
-  public async getPeerTyping(peerId: PeerId, container?: HTMLElement, threadId?: number) {
+  public async getPeerTyping(peerId: PeerId, container?: HTMLElement, threadId?: ThreadId) {
     // const log = this.log.bindPrefix('getPeerTyping-' + peerId);
     // log('getting peer typing');
 
@@ -3180,7 +3180,7 @@ export class AppImManager extends EventListenerBase<{
     this.managers.appMessagesManager.setTyping(this.chat.peerId, {_: cancel ? 'sendMessageCancelAction' : 'sendMessageChooseStickerAction'}, undefined, this.chat.threadId);
   }
 
-  public isSamePeer(options1: {peerId: PeerId, threadId?: number, monoforumThreadId?: PeerId, type?: ChatType}, options2: typeof options1) {
+  public isSamePeer(options1: {peerId: PeerId, threadId?: ThreadId, monoforumThreadId?: PeerId, type?: ChatType}, options2: typeof options1) {
     return options1.peerId === options2.peerId &&
       options1.threadId === options2.threadId &&
       options1.monoforumThreadId === options2.monoforumThreadId &&

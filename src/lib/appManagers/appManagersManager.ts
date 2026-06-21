@@ -94,23 +94,30 @@ export class AppManagersManager {
     const port = MTProtoMessagePort.getInstance<false>();
 
     port.addEventListener('manager', ({name, method, args, accountNumber}) => {
+      const invokeManager = (managers: Managers) => {
+        const manager = managers[name as keyof Managers] as any;
+        const fn = manager?.[method];
+        if(typeof fn !== 'function') {
+          console.error('[MANAGERS] missing manager method', {name, method, args, accountNumber, manager});
+          throw new Error(`Manager method is not available: ${String(name)}.${String(method)}`);
+        }
+
+        return fn.apply(manager, args);
+      };
+
       return callbackify(this.getManagersByAccount(), (managersByAccount) => {
         if(accountNumber === undefined) {
           const results: any[] = [];
           for(const accountNumber in managersByAccount) {
             const managers = managersByAccount[+accountNumber as any as ActiveAccountNumber];
-            const manager = managers[name as keyof Managers];
-            // @ts-ignore
-            results.push(manager[method](...args));
+            results.push(invokeManager(managers));
           }
 
           return results.some((result) => result instanceof Promise) ? Promise.all(results) : results;
         }
 
         const managers = managersByAccount[accountNumber];
-        const manager = managers[name as keyof Managers];
-        // @ts-ignore
-        return manager[method](...args);
+        return invokeManager(managers);
       });
     });
 

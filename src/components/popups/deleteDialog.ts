@@ -11,7 +11,7 @@ export default class PopupDeleteDialog {
     // actionType: 'leave' | 'delete',
     private peerType?: PeerType,
     private onSelect?: (promise: Promise<any>) => void,
-    private threadId?: number,
+    private threadId?: ThreadId,
     private monoforumParentPeerId?: number
   ) {
     this.construct();

@@ -220,6 +220,18 @@ const STATE_STEPS = {
 
     return {newVersion, oldVersion};
   },
+  MATRIX_BACKEND: (writer: ReturnType<typeof StateWriter>) => {
+    if(!import.meta.env.VITE_MATRIX_BACKEND) {
+      return;
+    }
+
+    writer.resetStorages.set('dialogs', []);
+    writer.resetStorages.set('chats', []);
+    writer.resetStorages.set('users', []);
+    writer.push('allDialogsLoaded', copy(STATE_INIT.allDialogsLoaded));
+    writer.push('pinnedOrders', copy(STATE_INIT.pinnedOrders));
+    writer.push('maxSeenMsgId', copy(STATE_INIT.maxSeenMsgId));
+  },
   CHANGED_AUTH: async(writer: ReturnType<typeof StateWriter>) => {
     const [authKeyFingerprint, baseDcAuthKey] = await Promise.all([
       sessionStorage.get('auth_key_fingerprint'),
@@ -284,6 +296,7 @@ async function loadStateForAccount(accountNumber: ActiveAccountNumber): Promise<
   STATE_STEPS.VALIDATE(commonWriter, COMMON_STATE_INIT);
   STATE_STEPS.MIGRATE_THEMES(commonWriter);
   const {newVersion, oldVersion} = STATE_STEPS.VERSION(writer);
+  STATE_STEPS.MATRIX_BACKEND(writer);
 
   return {
     state: writer.state,
@@ -347,6 +360,7 @@ async function loadOldState(): Promise<LoadStateResult> {
   STATE_STEPS.VALIDATE(commonWriter, COMMON_STATE_INIT);
   STATE_STEPS.MIGRATE_THEMES(commonWriter);
   const {newVersion, oldVersion} = STATE_STEPS.VERSION(writer);
+  STATE_STEPS.MATRIX_BACKEND(writer);
 
   if(DEBUG) {
     log('state res', writer.state, copy(writer.state));

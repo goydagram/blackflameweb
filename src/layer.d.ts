@@ -3061,7 +3061,7 @@ export namespace Update {
     saved_peer_id?: Peer,
     draft: DraftMessage,
     local?: boolean,
-    threadId?: number
+    threadId?: ThreadId
   };
 
   export type updateReadFeaturedStickers = {

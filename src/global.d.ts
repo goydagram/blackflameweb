@@ -107,9 +107,9 @@ declare global {
 
   type UserId = User.user['id'];
   type ChatId = Chat.chat['id'];
-  // type PeerId = `u${UserId}` | `c${ChatId}`;
-  // type PeerId = `${UserId}` | `-${ChatId}`;
   type PeerId = number;
+  type ThreadId = number;
+  // type PeerId = `${UserId}` | `-${ChatId}`;
   // type PeerId = number;
   type BotId = UserId;
   type DocId = Document.document['id'];

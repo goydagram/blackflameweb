@@ -1,20 +1,34 @@
 import isAnyChat from '@appManagers/utils/peers/isAnyChat';
 import isUser from '@appManagers/utils/peers/isUser';
 
+const maybeNumber = (value: string): string | number => /^-?\d+$/.test(value) ? +value : value;
+const stripPeerPrefix = (value: string) => /^[uc]/.test(value) ? value.slice(1) : value;
+
 String.prototype.toUserId = function() {
-  return (+this).toUserId();
+  const value = stripPeerPrefix(this.toString());
+  return maybeNumber(value) as UserId;
 };
 
 String.prototype.toChatId = function() {
-  return (+this).toChatId();
+  const value = stripPeerPrefix(this.toString()).replace(/^-/, '');
+  return maybeNumber(value) as ChatId;
 };
 
 String.prototype.toPeerId = function(isChat?: boolean) {
-  return (+this).toPeerId(isChat);
+  const value = this.toString();
+  if(/^[uc].+/.test(value)) {
+    return value as unknown as PeerId;
+  }
+
+  if(isChat === undefined) {
+    return (value.startsWith('-') ? `c${value.slice(1)}` : `u${value}`) as unknown as PeerId;
+  }
+
+  return (isChat ? `c${value.replace(/^-/, '')}` : `u${value}`) as unknown as PeerId;
 };
 
 String.prototype.isPeerId = function(): this is string {
-  return /^-?\d+$/.test(this.toString());
+  return /^[uc].+/.test(this.toString()) || /^-?\d+$/.test(this.toString());
 };
 
 // * don't return just 'this', because Firefox returns empty `Number` class
@@ -28,7 +42,11 @@ Number.prototype.toChatId = function() {
 
 // * don't return just 'this', because Firefox returns empty `Number` class
 Number.prototype.toPeerId = function(isChat?: boolean) {
-  return isChat === undefined ? +this : (isChat ? -Math.abs(this as number) : +this);
+  if(isChat === undefined) {
+    return (+this).toString().toPeerId(+this < 0);
+  }
+
+  return (isChat ? `c${Math.abs(this as number)}` : `u${+this}`) as unknown as PeerId;
 };
 
 Number.prototype.isPeerId = function(): this is number {

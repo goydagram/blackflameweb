@@ -13,6 +13,7 @@ import InputSearch from '@components/inputSearch';
 const NO_STATUS = false;
 const TEST_DBLCLICK = false;
 const HAVE_RECONNECT_BUTTON = false;
+const IS_MATRIX_BACKEND = !!(import.meta.env as Record<string, string | undefined>).VITE_MATRIX_BACKEND;
 
 export default class ConnectionStatusComponent {
   public static CHANGE_STATE_DELAY = 400;
@@ -99,9 +100,9 @@ export default class ConnectionStatusComponent {
       }
 
       const status = connectionStatus['NET-' + baseDcId];
-      const online = status && (overrideStatus ?? status.status) === ConnectionStatus.Connected;
+      const online = IS_MATRIX_BACKEND || (status && (overrideStatus ?? status.status) === ConnectionStatus.Connected);
 
-      if(this.connecting && online) {
+      if(!IS_MATRIX_BACKEND && this.connecting && online) {
         this.managers.apiUpdatesManager.forceGetDifference();
       }
 
@@ -109,9 +110,9 @@ export default class ConnectionStatusComponent {
         this.hadConnect = true;
       }
 
-      this.timedOut = status && (overrideStatus ?? status.status) === ConnectionStatus.TimedOut;
+      this.timedOut = !IS_MATRIX_BACKEND && status && (overrideStatus ?? status.status) === ConnectionStatus.TimedOut;
       this.connecting = !online;
-      this.retryAt = status && status.retryAt;
+      this.retryAt = !IS_MATRIX_BACKEND && status && status.retryAt;
       DEBUG && this.log('connecting', this.connecting);
       this.setState();
     });

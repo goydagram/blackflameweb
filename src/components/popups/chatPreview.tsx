@@ -24,7 +24,7 @@ export type ChatPreviewAnchor = HTMLElement | {x: number, y: number} | {
 
 export type ChatPreviewOptions = {
   peerId: PeerId,
-  threadId?: number,
+  threadId?: ThreadId,
   monoforumThreadId?: number,
   lastMsgId?: number,
   anchor?: ChatPreviewAnchor

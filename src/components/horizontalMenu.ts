@@ -52,6 +52,10 @@ export async function selectTarget({
   selectTab,
   onChange
 }: SelectTargetArgs) {
+  if(!target) {
+    return false;
+  }
+
   if(onClick) {
     const tabContent = content?.children[id] as HTMLDivElement;
     const result1 = onClick(id, tabContent, animate);
@@ -72,10 +76,11 @@ export async function selectTarget({
     // against a row whose scroll position is the default 0.
     const noOverflow = containerEl.scrollWidth <= containerEl.clientWidth;
     const isFirstAndAtStart = id === 0 && containerEl.scrollLeft === 0;
-    if(!noOverflow && !isFirstAndAtStart) {
+    const scrollTarget = target.parentElement?.children[id] as HTMLElement | undefined;
+    if(!noOverflow && !isFirstAndAtStart && scrollTarget) {
       fastSmoothScroll({
         container: containerEl,
-        element: target.parentElement.children[id] as HTMLElement,
+        element: scrollTarget,
         position: 'center',
         forceDirection: animate ? undefined : FocusDirection.Static,
         forceDuration: transitionTime,

@@ -357,7 +357,7 @@ export default class SelectorSearch {
     avatarContainer.append(avatarEl.node, avatarClose);
 
     const keyStr = '' + key;
-    let threadId: number;
+    let threadId: ThreadId;
     if(keyStr.includes('_')) { // * handle threads
       const [_peerId, _threadId] = keyStr.split('_');
       if(_peerId.isPeerId()) { // * needed

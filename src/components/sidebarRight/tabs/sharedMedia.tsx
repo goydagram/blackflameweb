@@ -32,7 +32,7 @@ type SharedMediaHistoryStorage = Partial<{
 
 const historiesStorage: {
   [peerId: PeerId]: {
-    [threadId: number]: SharedMediaHistoryStorage
+    [threadId: ThreadId]: SharedMediaHistoryStorage
   }
 } = {};
 
@@ -40,7 +40,7 @@ const SharedMedia: Component = () => {
   const [tab] = useSuperTab<typeof AppSharedMediaTab>();
   const {HotReloadGuard, apiManagerProxy, appImManager} = useHotReloadGuard();
 
-  const getHistoryStorage = (peerId: PeerId, threadId?: number) => {
+  const getHistoryStorage = (peerId: PeerId, threadId?: ThreadId) => {
     return (historiesStorage[peerId] ??= {})[threadId] ??= {};
   };
 
@@ -199,7 +199,7 @@ const SharedMedia: Component = () => {
     tab.searchSuper.loadMutex = promise;
   };
 
-  const _renderNewMessage = (message: Message.message | Message.messageService, peerId = message.peerId, threadId?: number) => {
+  const _renderNewMessage = (message: Message.message | Message.messageService, peerId = message.peerId, threadId?: ThreadId) => {
     const historyStorage = historiesStorage[peerId]?.[threadId];
     if(!historyStorage) return;
 
@@ -259,7 +259,7 @@ const SharedMedia: Component = () => {
     historyStorage: SharedMediaHistoryStorage,
     peerId: PeerId,
     mids: number[],
-    threadId?: number
+    threadId?: ThreadId
   ) => {
     const notFound: Set<SearchSuperMediaTab> = new Set();
     for(const mid of mids) {

@@ -443,7 +443,9 @@ function getBubbleFullMid(bubble: HTMLElement) {
 }
 
 export function splitFullMid(fullMid: FullMid) {
-  const [peerId, mid] = fullMid.split('_');
+  const separatorIndex = fullMid.lastIndexOf('_');
+  const peerId = fullMid.slice(0, separatorIndex);
+  const mid = fullMid.slice(separatorIndex + 1);
   return {peerId: peerId.toPeerId(), mid: +mid};
 }
 

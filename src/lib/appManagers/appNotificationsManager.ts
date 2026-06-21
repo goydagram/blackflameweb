@@ -202,14 +202,14 @@ export class AppNotificationsManager extends AppManager {
     this.checkMuteUntilTimeout = ctx.setTimeout(this.checkMuteUntil, timeout);
   };
 
-  public getPeerKey(peerId: PeerId, threadId?: number) {
+  public getPeerKey(peerId: PeerId, threadId?: ThreadId) {
     return peerId + (threadId ? '_' + threadId : '');
   }
 
   public savePeerSettings({key, peerId, threadId, settings}: {
     key?: Exclude<NotifyPeer['_'], 'notifyPeer'>,
     peerId?: PeerId,
-    threadId?: number,
+    threadId?: ThreadId,
     settings: PeerNotifySettings
   }) {
     let obj: any;
@@ -252,7 +252,7 @@ export class AppNotificationsManager extends AppManager {
   }: {
     peerId: PeerId,
     respectType?: boolean,
-    threadId?: number
+    threadId?: ThreadId
   }): PeerNotifySettings {
     const n: PeerNotifySettings = {
       _: 'peerNotifySettings'

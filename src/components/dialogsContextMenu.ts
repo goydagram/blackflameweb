@@ -33,7 +33,7 @@ export default class DialogsContextMenu {
 
   private peerId: PeerId;
   private filterId: number;
-  private threadId: number;
+  private threadId: ThreadId;
   private monoforumParentPeerId?: PeerId;
   private dialog: AnyDialog | MonoforumDialog;
   private canManageTopics: boolean;

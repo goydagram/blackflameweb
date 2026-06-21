@@ -13,7 +13,7 @@ type GetPeerTitleOptions = {
   onlyFirstName?: boolean,
   username?: boolean,
   limitSymbols?: number,
-  threadId?: number,
+  threadId?: ThreadId,
   useManagers?: boolean
 } & Pick<WrapSomethingOptions, 'managers'>;
 

@@ -114,7 +114,7 @@ export type SearchSuperContext = {
   query?: string,
   maxId?: number,
   folderId?: number,
-  threadId?: number,
+  threadId?: ThreadId,
   monoforumThreadId?: PeerId,
   date?: number,
   nextRate?: number,
@@ -2801,7 +2801,7 @@ export default class AppSearchSuper {
   public setQuery({peerId, query, threadId, historyStorage, folderId, minDate, maxDate, chatType}: {
     peerId: PeerId,
     query?: string,
-    threadId?: number,
+    threadId?: ThreadId,
     historyStorage?: AppSearchSuper['historyStorage'],
     folderId?: number,
     minDate?: number,

@@ -24,7 +24,7 @@ export async function fetchDialogFilters() {
   });
 }
 
-const p = (p: PeerId) => Math.abs(p);
+const p = (peerId: PeerId) => peerId.toPeerId();
 
 export async function addToFilter(filter: MyDialogFilter, peerId: PeerId) {
   log.debug('addToFilter before', filter);

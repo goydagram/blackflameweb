@@ -92,7 +92,7 @@ async function resolveChatRightsActions(peerIdMids: {[fromPeerId: PeerId]: numbe
 
 export default async function showForwardPopup(
   peerIdMids?: {[fromPeerId: PeerId]: number[]},
-  _onSelect?: (peerId: PeerId, threadId?: number) => Promise<void> | void,
+  _onSelect?: (peerId: PeerId, threadId?: ThreadId) => Promise<void> | void,
   noTopics?: boolean,
   onClose?: () => void
 ) {
@@ -189,7 +189,7 @@ export default async function showForwardPopup(
     monoforumThreadId
   }: {
     peerId: number,
-    threadId?: number,
+    threadId?: ThreadId,
     monoforumThreadId?: number
   }, openChat: boolean) => {
     if(_onSelect) {

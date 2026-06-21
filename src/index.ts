@@ -538,6 +538,12 @@ function setDocumentLangPackProperties(langPack: LangPackDifference.langPackDiff
 
   let authState = stateResult.state.authState;
 
+  if(import.meta.env.VITE_MATRIX_BACKEND) {
+    await rootScope.managers.apiManager.setUserAuth(import.meta.env.VITE_MATRIX_USER_ID || '');
+    await (rootScope.managers.dialogsStorage as any).clear?.();
+    await rootScope.managers.appStateManager.pushToState('authState', authState = {_: 'authStateSignedIn'});
+  }
+
   const hash = location.hash;
   const splitted = hash.split('?');
   const params = parseUriParamsLine(splitted[1] ?? splitted[0].slice(1));

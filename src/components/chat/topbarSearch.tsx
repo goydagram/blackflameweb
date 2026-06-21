@@ -60,7 +60,7 @@ const DEFAULT_SEARCH_TYPE: SearchType = undefined;
 type LoadOptions = {
   middleware: Middleware,
   peerId: PeerId,
-  threadId: number,
+  threadId: ThreadId,
   monoforumThreadId: PeerId,
   query: string,
   fromPeerId?: PeerId,
@@ -334,7 +334,7 @@ export default function TopbarSearch(props: {
   chat: Chat,
   chatType: ChatType,
   peerId: PeerId,
-  threadId?: number,
+  threadId?: ThreadId,
   filterPeerId: Accessor<PeerId>,
   canFilterSender?: boolean,
   query?: Accessor<string>,

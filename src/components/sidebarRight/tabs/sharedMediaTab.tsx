@@ -25,7 +25,7 @@ export type SharedMediaImpl = {
  */
 export default class AppSharedMediaTab extends SliderSuperTab {
   public peerId: PeerId;
-  public threadId: number;
+  public threadId: ThreadId;
   public isFirst: boolean;
   public noProfile: boolean;
   public peerChanged: boolean;
@@ -65,7 +65,7 @@ export default class AppSharedMediaTab extends SliderSuperTab {
     return this._render();
   }
 
-  public setPeer(peerId: PeerId, threadId?: number) {
+  public setPeer(peerId: PeerId, threadId?: ThreadId) {
     if(this.peerId === peerId && this.threadId === threadId) return false;
 
     this.peerId = peerId;

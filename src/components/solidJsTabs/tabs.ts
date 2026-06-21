@@ -419,7 +419,7 @@ export const AppEditContactTab =
   });
 
 export const AppEditTopicTab =
-  scaffoldSolidJSTab<{peerId: PeerId, threadId?: number}>({
+  scaffoldSolidJSTab<{peerId: PeerId, threadId?: ThreadId}>({
     title: (p) => p.threadId ? 'ForumTopic.Title.Edit' : 'NewTopic',
     getComponentModule: () => import('../sidebarRight/tabs/editTopic')
   });
@@ -789,7 +789,7 @@ export const AppTwoStepVerificationEmailConfirmationTab =
 
 type AppPrivateSearchTabPayload = {
   peerId: PeerId,
-  threadId?: number,
+  threadId?: ThreadId,
   onDatePick?: (timestamp: number) => void,
   query?: string
 };

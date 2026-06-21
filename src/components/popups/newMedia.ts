@@ -184,7 +184,7 @@ export default class PopupNewMedia extends PopupElement {
     this.construct(willAttachType);
   }
 
-  public static async canSend({peerId, onlyVisible, threadId}: {peerId?: PeerId, onlyVisible?: boolean, threadId?: number}) {
+  public static async canSend({peerId, onlyVisible, threadId}: {peerId?: PeerId, onlyVisible?: boolean, threadId?: ThreadId}) {
     const actions: ChatRights[] = [
       'send_photos',
       'send_videos',

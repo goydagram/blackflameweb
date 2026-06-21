@@ -15,7 +15,7 @@ export type PopupPeerCheckboxOptions = CheckboxFieldOptions & {checkboxField?: C
 
 export type PopupPeerOptions = Omit<PopupOptions, 'buttons' | 'title'> & Partial<{
   peerId: PeerId,
-  threadId: number,
+  threadId: ThreadId,
   title: string | HTMLElement | DocumentFragment,
   titleLangKey: LangPackKey,
   titleLangArgs: any[],

@@ -93,7 +93,7 @@ export default class Chat extends EventListenerBase<{
 
   // * will be also used for RequestHistoryOptions
   public peerId: PeerId;
-  public threadId: number;
+  public threadId: ThreadId;
   public monoforumThreadId: number;
   public savedReaction: (Reaction.reactionCustomEmoji | Reaction.reactionEmoji)[];
   public isPublicHashtag: boolean;

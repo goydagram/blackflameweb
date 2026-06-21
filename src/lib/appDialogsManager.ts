@@ -192,7 +192,7 @@ type DialogElementOptions = {
   loadPromises?: Promise<any>[],
   fromName?: string,
   noIcons?: boolean,
-  threadId?: number,
+  threadId?: ThreadId,
   monoforumParentPeerId?: PeerId,
   wrapOptions: WrapSomethingOptions,
   isMainList?: boolean,

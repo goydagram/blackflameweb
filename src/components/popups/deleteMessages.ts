@@ -18,7 +18,7 @@ export default class PopupDeleteMessages {
     private mids: number[],
     private type: ChatType,
     private onConfirm?: () => void,
-    private threadId?: number
+    private threadId?: ThreadId
   ) {
     this.construct();
   }

@@ -52,6 +52,19 @@ export class AppAvatarsManager extends AppManager {
       return saved[size];
     }
 
+    const matrixUrl = (photo as any).matrix_url;
+    if(matrixUrl && size !== 'photo_video' && size !== 'photo_video_full') {
+      saved[size] = matrixUrl;
+      MTProtoMessagePort.getInstance<false>().invokeVoid('mirror', {
+        name: 'avatars',
+        key: joinDeepPath(peerId, size),
+        value: matrixUrl,
+        accountNumber: this.getAccountNumber()
+      });
+
+      return matrixUrl;
+    }
+
     if(size === 'photo_video' || size === 'photo_video_full') {
       const quality = size === 'photo_video_full' ? 'full' : 'preview';
       const promise = saved[size] = this.loadAvatarVideo(peerId, photo, quality, size);

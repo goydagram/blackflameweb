@@ -136,7 +136,7 @@ type Props = {
   bubbles: ChatBubbles;
   chat: Chat;
   peerId: PeerId;
-  threadId?: number;
+  threadId?: ThreadId;
   lastMsgId?: number;
   index: number;
 };

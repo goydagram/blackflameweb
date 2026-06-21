@@ -413,8 +413,8 @@ export default class AppSelectPeers {
       cancelEvent(e);
       if(this.freezed) return;
 
-      let key: PeerId | string = target.dataset.peerId;
-      key = key.isPeerId() ? key.toPeerId() : key;
+      const rawKey = target.dataset.peerId;
+      const key = (rawKey?.isPeerId() ? rawKey.toPeerId() : rawKey) as PeerId;
 
       if(key.isPeerId() && target.classList.contains('is-premium-locked')) {
         wrapPeerTitle({peerId: key, onlyFirstName: true}).then((title) => {

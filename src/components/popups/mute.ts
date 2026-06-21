@@ -27,7 +27,7 @@ const times: {value: number | string, langPackKey: LangPackKey, checked?: boolea
 }];
 
 export default class PopupMute extends PopupPeer {
-  constructor(peerId: PeerId, threadId?: number) {
+  constructor(peerId: PeerId, threadId?: ThreadId) {
     super('popup-mute', {
       peerId,
       titleLangKey: 'Notifications',

@@ -45,9 +45,9 @@ export type BroadcastEvents = {
 
   'peer_pinned_messages': {peerId: PeerId, mids?: number[], pinned?: boolean, unpinAll?: true},
   'peer_pinned_hidden': {peerId: PeerId, maxId: number},
-  'peer_typings': {peerId: PeerId, threadId?: number, typings: UserTyping[]},
+  'peer_typings': {peerId: PeerId, threadId?: ThreadId, typings: UserTyping[]},
   'peer_block': {peerId: PeerId, blocked?: boolean, blockedMyStoriesFrom?: boolean},
-  'peer_title_edit': {peerId: PeerId, threadId?: number},
+  'peer_title_edit': {peerId: PeerId, threadId?: ThreadId},
   'peer_deleted': PeerId, // left chat, deleted user dialog, left channel
   'peer_full_update': PeerId,
   'peer_settings': {peerId: PeerId, settings: PeerSettings},
@@ -131,7 +131,7 @@ export type BroadcastEvents = {
   'state_synchronizing': void,
 
   'contacts_update': UserId,
-  'avatar_update': {peerId: PeerId, threadId?: number},
+  'avatar_update': {peerId: PeerId, threadId?: ThreadId},
   'poll_update': {poll: Poll, results: PollResults},
   'invalidate_participants': ChatId,
   // 'channel_settings': {channelId: number},
@@ -139,7 +139,7 @@ export type BroadcastEvents = {
 
   'connection_status_change': ConnectionStatusChange,
   'settings_updated': {key: string, value: any, settings: StateSettings},
-  'draft_updated': {peerId: PeerId, threadId?: number, monoforumThreadId?: PeerId, draft: MyDraftMessage | undefined, force?: boolean},
+  'draft_updated': {peerId: PeerId, threadId?: ThreadId, monoforumThreadId?: PeerId, draft: MyDraftMessage | undefined, force?: boolean},
 
   'background_change': void,
 

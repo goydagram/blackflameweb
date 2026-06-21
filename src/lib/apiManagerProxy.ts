@@ -1105,15 +1105,25 @@ class ApiManagerProxy extends MTProtoMessagePort {
   }
 
   public getPeer(peerId: PeerId) {
-    return this.mirrors.peers[peerId];
+    const peer = this.mirrors.peers[peerId];
+    if(peer) {
+      return peer;
+    }
+
+    const value = peerId as unknown;
+    if(typeof value === 'string') {
+      if(value.startsWith('u') || value.startsWith('c')) {
+        return this.mirrors.peers[value.slice(1) as unknown as PeerId];
+      }
+    }
   }
 
   public getUser(userId: UserId) {
-    return this.mirrors.peers[userId.toPeerId(false)] as User.user;
+    return this.getPeer(userId.toPeerId(false)) as User.user;
   }
 
   public getChat(chatId: ChatId) {
-    return this.mirrors.peers[chatId.toPeerId(true)] as Exclude<Chat, Chat.chatEmpty>;
+    return this.getPeer(chatId.toPeerId(true)) as Exclude<Chat, Chat.chatEmpty>;
   }
 
   public isForum(peerId: PeerId) {

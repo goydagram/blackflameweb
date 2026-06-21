@@ -9,7 +9,7 @@ type Options = {
 };
 
 export default function getMessageThreadId(message: Message.message | Message.messageService, {isForum = false, isBotforum = false}: Options = {}) {
-  let threadId: number;
+  let threadId: ThreadId;
   const replyTo = message.reply_to;
   const savedPeerId = (message as Message.message).saved_peer_id && getPeerId((message as Message.message).saved_peer_id);
   if(savedPeerId) {

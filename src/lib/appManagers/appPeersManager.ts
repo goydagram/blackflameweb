@@ -174,7 +174,7 @@ export class AppPeersManager extends AppManager {
     return !!getPeerActiveUsernames(this.getPeer(peerId))[0];
   }
 
-  public isSavedDialog(peerId: PeerId, threadId?: number) {
+  public isSavedDialog(peerId: PeerId, threadId?: ThreadId) {
     return !!(peerId === this.peerId && threadId);
   }
 
@@ -241,7 +241,7 @@ export class AppPeersManager extends AppManager {
   public getInputNotifyPeerById<T extends {
     peerId: PeerId,
     ignorePeerId?: boolean,
-    threadId?: number
+    threadId?: ThreadId
   }>({
     peerId,
     ignorePeerId,
@@ -310,7 +310,7 @@ export class AppPeersManager extends AppManager {
     return text;
   }
 
-  public getDialogType(peerId: PeerId, threadId?: number): PeerType {
+  public getDialogType(peerId: PeerId, threadId?: ThreadId): PeerType {
     if(this.peerId === peerId && threadId) {
       return 'savedDialog';
     } else if(this.isMonoforum(peerId)) {

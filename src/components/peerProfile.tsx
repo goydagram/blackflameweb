@@ -59,7 +59,7 @@ keepMe(ripple);
 
 type PeerProfileContextValue = {
   peerId: PeerId,
-  threadId: number,
+  threadId: ThreadId,
   scrollable: Scrollable,
   setCollapsedOn: HTMLElement,
   isDialog: boolean,
@@ -76,8 +76,8 @@ type PeerProfileContextValue = {
   isBotforum: boolean,
   needSimpleAvatar: boolean,
   hasSavedMusic: boolean,
-  getDetailsForUse: () => {peerId: PeerId, threadId?: number},
-  verifyContext: (peerId: PeerId, threadId?: number) => boolean,
+  getDetailsForUse: () => {peerId: PeerId, threadId?: ThreadId},
+  verifyContext: (peerId: PeerId, threadId?: ThreadId) => boolean,
 };
 
 const PeerProfileContext = createContext<PeerProfileContextValue>();
@@ -113,7 +113,7 @@ function getStatusHiddenShow(peerId: PeerId) {
 
 const PeerProfile = (props: {
   peerId: PeerId,
-  threadId?: number,
+  threadId?: ThreadId,
   isDialog?: boolean,
   scrollable: Scrollable,
   setCollapsedOn: HTMLElement,
@@ -163,7 +163,7 @@ const PeerProfile = (props: {
         threadId
       };
     },
-    verifyContext: (peerId: PeerId, threadId?: number) => {
+    verifyContext: (peerId: PeerId, threadId?: ThreadId) => {
       if(value.peerId !== peerId) {
         return false;
       }

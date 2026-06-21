@@ -743,7 +743,16 @@ export class AppUsersManager extends AppManager {
       return id;
     }
 
-    return this.users[id];
+    const direct = this.users[id];
+    if(direct) {
+      return direct;
+    }
+
+    const value = id as unknown;
+    if(typeof value === 'string') {
+      const nativeUserId = value.startsWith('u') ? value.slice(1) : value;
+      return this.users[nativeUserId as UserId];
+    }
   }
 
   public getUsers() {

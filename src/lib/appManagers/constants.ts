@@ -6,12 +6,12 @@ import type {MyDialogFilter} from '@lib/storages/filters';
 export type UserAuth = {dcID: number | string, date: number, id: PeerId};
 export type REAL_FOLDER_ID = 0 | 1;
 
-export const NULL_PEER_ID: PeerId = 0;
-export const REPLIES_PEER_ID: PeerId = 1271266957;
+export const NULL_PEER_ID: PeerId = 'u0' as unknown as PeerId;
+export const REPLIES_PEER_ID: PeerId = 'u1271266957' as unknown as PeerId;
 export const VERIFICATION_CODES_BOT_ID = 489000;
 export const REPLIES_HIDDEN_CHANNEL_ID: ChatId = 777;
-export const HIDDEN_PEER_ID: PeerId = 2666000;
-export const SERVICE_PEER_ID: PeerId = 777000;
+export const HIDDEN_PEER_ID: PeerId = 'u2666000' as unknown as PeerId;
+export const SERVICE_PEER_ID: PeerId = 'u777000' as unknown as PeerId;
 export const MUTE_UNTIL = 0x7FFFFFFF;
 export const BANNED_RIGHTS_UNTIL_FOREVER = 0x7FFFFFFF;
 export const BOT_START_PARAM = '';
@@ -29,7 +29,7 @@ export const SERVER_IMAGE_MIME_TYPES = new Set(['image/jpeg', 'image/png', 'imag
 export const STARS_CURRENCY = 'XTR';
 export const TON_CURRENCY = 'TON';
 export const SEND_PAID_WITH_STARS_DELAY = 5e3;
-export const SEND_PAID_REACTION_ANONYMOUS_PEER_ID: PeerId = -1;
+export const SEND_PAID_REACTION_ANONYMOUS_PEER_ID: PeerId = 'c1' as unknown as PeerId;
 export const SUGGESTED_POST_WAIT_FOR_REWARD_HOURS = 24;
 export const SUGGESTED_POST_DEFAULT_STARS_COMMISSION = 850;
 export const PEER_FULL_TTL = 3 * 60e3;

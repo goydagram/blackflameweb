@@ -55,11 +55,11 @@ const avatarsMap: Map<string, Set<ReturnType<typeof AvatarNew>>> = new Map();
 const believeMe: Map<string, Set<ReturnType<typeof AvatarNew>>> = new Map();
 const seen: Set<PeerId> = new Set();
 
-function getAvatarQueueKey(peerId: PeerId, threadId?: number) {
+function getAvatarQueueKey(peerId: PeerId, threadId?: ThreadId) {
   return peerId + (threadId ? '_' + threadId : '');
 }
 
-const onAvatarUpdate = ({peerId, threadId}: {peerId: PeerId, threadId?: number}) => {
+const onAvatarUpdate = ({peerId, threadId}: {peerId: PeerId, threadId?: ThreadId}) => {
   const key = getAvatarQueueKey(peerId, threadId);
   const set = avatarsMap.get(key);
   if(!set?.size) {
@@ -391,7 +391,7 @@ export function StoriesSegments(props: {
 export const AvatarNew = (props: {
   accountNumber?: ActiveAccountNumber,
   peerId?: PeerId,
-  threadId?: number,
+  threadId?: ThreadId,
   isDialog?: boolean,
   isBig?: boolean,
   withVideoAvatar?: boolean,

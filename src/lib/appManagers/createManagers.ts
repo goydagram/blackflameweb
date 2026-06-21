@@ -26,6 +26,7 @@ import {AppWebPagesManager} from '@appManagers/appWebPagesManager';
 import {AppLangPackManager} from '@appManagers/appLangPackManager';
 import {ApiFileManager} from '@appManagers/apiFileManager';
 import {ApiManager} from '@appManagers/apiManager';
+import {MatrixApiManager} from '@appManagers/matrixApiManager';
 import ctx from '@environment/ctx';
 import PeersStorage from '@lib/storages/peers';
 import ThumbsStorage from '@lib/storages/thumbs';
@@ -92,7 +93,7 @@ export default function createManagers(
     appEmojiManager: new AppEmojiManager,
     filtersStorage: new FiltersStorage,
     dialogsStorage: new DialogsStorage,
-    apiManager: new ApiManager,
+    apiManager: (import.meta.env.VITE_MATRIX_BACKEND ? new MatrixApiManager : new ApiManager) as ApiManager,
     cryptoWorker: cryptoMessagePort,
     passwordManager: new PasswordManager,
     apiFileManager: new ApiFileManager,

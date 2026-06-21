@@ -3,7 +3,7 @@ import Chat from '@components/chat/chat';
 import appImManager from '@lib/appImManager';
 
 export function useCurrentPeerId() {
-  const [peerId, setPeerId] = createSignal<number>(appImManager.chat.peerId);
+  const [peerId, setPeerId] = createSignal<PeerId>(appImManager.chat.peerId);
 
   const onChange = (chat: Chat) => {
     setPeerId(chat.peerId);

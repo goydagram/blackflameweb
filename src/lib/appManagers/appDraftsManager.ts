@@ -18,7 +18,7 @@ export type MyDraftMessage = DraftMessage.draftMessage;
 
 type SyncDraftArgs = {
   peerId: PeerId;
-  threadId?: number;
+  threadId?: ThreadId;
   monoforumThreadId?: PeerId;
   localDraft?: DraftMessage;
   saveOnServer?: boolean;
@@ -27,7 +27,7 @@ type SyncDraftArgs = {
 
 type ClearDraftArgs = {
   peerId: PeerId;
-  threadId?: number;
+  threadId?: ThreadId;
   monoforumThreadId?: PeerId;
 };
 
@@ -84,11 +84,11 @@ export class AppDraftsManager extends AppManager {
     this.drafts = {};
   };
 
-  private getKey(peerId: PeerId, threadId?: number) {
+  private getKey(peerId: PeerId, threadId?: ThreadId) {
     return '' + peerId + (threadId ? '_' + threadId : '');
   }
 
-  public getDraft(peerId: PeerId, threadId?: number) {
+  public getDraft(peerId: PeerId, threadId?: ThreadId) {
     return this.drafts[this.getKey(peerId, threadId)];
   }
 
@@ -146,7 +146,7 @@ export class AppDraftsManager extends AppManager {
     force
   }: {
     peerId: PeerId,
-    threadId?: number,
+    threadId?: ThreadId,
     monoforumThreadId?: PeerId,
     draft: DraftMessage,
     notify?: boolean,
@@ -362,7 +362,7 @@ export class AppDraftsManager extends AppManager {
     }
   }
 
-  public setDraft(peerId: PeerId, threadId: number, message: string, entities?: MessageEntity[]) {
+  public setDraft(peerId: PeerId, threadId: ThreadId, message: string, entities?: MessageEntity[]) {
     const draft: DraftMessage.draftMessage = {
       _: 'draftMessage',
       date: tsNow(true),

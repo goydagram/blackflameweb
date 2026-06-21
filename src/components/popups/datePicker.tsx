@@ -95,7 +95,7 @@ export type DatePickerPopupOptions = {
   footerAfter?: () => JSX.Element,
   // — port: per-day media thumbnails (jump-to-date in chat) —
   peerId?: PeerId,
-  threadId?: number,
+  threadId?: ThreadId,
   mediaFilter?: MessagesFilter['_'],
   // — port: multi-date (range) selection mode —
   // `multiSelect` makes the popup OPEN already in range-pick mode.

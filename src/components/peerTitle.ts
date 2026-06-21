@@ -24,7 +24,7 @@ export type PeerTitleOptions = {
   withIcons?: boolean,
   withPremiumIcon?: boolean,
   clickableEmojiStatus?: boolean,
-  threadId?: number,
+  threadId?: ThreadId,
   meAsNotes?: boolean,
   iconsColor?: string,
   asAllChats?: AsAllChatsType,

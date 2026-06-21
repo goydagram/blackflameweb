@@ -217,7 +217,7 @@ export class AppInlineBotsManager extends AppManager {
     }
   }
 
-  public switchInlineQuery(peerId: PeerId, threadId: number, botId: BotId, query: string) {
+  public switchInlineQuery(peerId: PeerId, threadId: ThreadId, botId: BotId, query: string) {
     const message = '@' + this.appPeersManager.getPeerUsername(botId.toPeerId()) + ' ' + query;
     this.appDraftsManager.setDraft(peerId, threadId, message);
   }

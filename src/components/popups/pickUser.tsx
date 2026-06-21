@@ -38,7 +38,7 @@ import {REAL_FOLDERS} from '@lib/appManagers/constants';
 
 type PopupPickUserSelectedItem = {
   peerId: PeerId,
-  threadId?: number,
+  threadId?: ThreadId,
   monoforumThreadId?: PeerId,
   key: string
 };
@@ -67,7 +67,7 @@ async function wrapTopicRow({
   middleware
 }: {
   peerId: PeerId,
-  threadId: number,
+  threadId: ThreadId,
   middleware: Middleware
 }) {
   const size = makeMediaSize(32, 32);
@@ -723,7 +723,7 @@ export function showSharingPickerPopup(options: {
 }
 
 export function showSharingPicker2Popup(options?: Modify<Parameters<typeof showSharingPickerPopup>[0], {onSelect?: never}>) {
-  return new Promise<{peerId: PeerId, threadId?: number, monoforumThreadId?: PeerId}>((resolve, reject) => {
+  return new Promise<{peerId: PeerId, threadId?: ThreadId, monoforumThreadId?: PeerId}>((resolve, reject) => {
     let resolved = false;
     showSharingPickerPopup({
       ...(options || {}),
